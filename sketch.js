@@ -14,7 +14,7 @@ const restrictions = [
 let population = [];//Population array
 let fitness = []; //Fitness array
 //Simplex solver with generic algorithm
-const SIZE_POPULATION = 10; //Population max size
+const SIZE_POPULATION = 200; //Population max size
 const MUATATION_FACTOR = 0.4; //mutation factor
 
 
@@ -233,6 +233,8 @@ function draw()
          //Show best
         text("Best History", 0,400);
         let best_history_string = getFunctionString(best_history);
+        best_history_string[best_history_string.length-2]= " "; 
+        best_history_string+= " = " + calculateZ(best_history);
         text(best_history_string, 0, 450);
     }
 
@@ -241,6 +243,8 @@ function draw()
         //Best current
         text("Best Current", 0,500);
         let best_current_string = getFunctionString(best_current);
+        best_current_string[best_current_string.length-2]= " ";
+        best_current_string += " = " + calculateZ(best_current);
         text(best_current_string, 0, 550);
     }
 }
