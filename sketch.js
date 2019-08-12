@@ -3,7 +3,7 @@ const z_coeficients= [4,3,2];
 
 
 //Restrictions
-//The last value is the b, its the right of inequality
+//The last value is the b, is the right of inequality
 const restrictions = [
     [1,2,5,60], 
      [2,1,0,10]
@@ -14,7 +14,7 @@ const restrictions = [
 let population = [];//Population array
 let fitness = []; //Fitness array
 //Simplex solver with generic algorithm
-const SIZE_POPULATION = 200; //Population max size
+const SIZE_POPULATION = 600; //Population max size
 const MUATATION_FACTOR = 0.4; //mutation factor
 
 
@@ -45,7 +45,7 @@ function generateFirstPopulation()
 function initializeGenome()
 {
     return Array(z_coeficients.length)
-        .fill().map(() => Math.round(Math.random() * 10))
+        .fill().map(() => Math.round(Math.random() * 15))
 }
 
 function calculateFitness()
@@ -166,7 +166,7 @@ function mutate(genome)
     if(random(1) < MUATATION_FACTOR)
     {
         index = int(random(n));
-        genome[index] = random(0,10);
+        genome[index] = random(0,15);
     }
 }
 
@@ -186,12 +186,21 @@ function pickOne(list, prob)
     return list[index].slice();
 }
 
-function getFunctionString(z)
+function getZString(z)
 {
     let z_function = "Z = ";
     for (let i=0;i<z.length;i++)
     {
         z_function+= z[i] + "*" + "X"+i + " + ";
+    }
+    return z_function;
+}
+function getFunctionString(f)
+{
+    let z_function = "Z = ";
+    for (let i=0;i<f.length;i++)
+    {
+        z_function+= z_coeficients[i] + "*(" + nf(f[i], 2,5) + ") + ";
     }
     return z_function;
 }
@@ -215,14 +224,13 @@ function getRestrictionTitle()
 function draw() 
 {
     background(0);
-    //DARWIN IS AWESOME
     calculateFitness();
     generateGeneration();
 
     fill(255)
     textSize(32);
 
-    let z_function = getFunctionString(z_coeficients);
+    let z_function = getZString(z_coeficients);
     let restriction_title = getRestrictionTitle();
 
     text(z_function, 0, 30);
@@ -234,7 +242,7 @@ function draw()
         text("Best History", 0,400);
         let best_history_string = getFunctionString(best_history);
         best_history_string[best_history_string.length-2]= " "; 
-        best_history_string+= " = " + calculateZ(best_history);
+        best_history_string+= " = " + nf(calculateZ(best_history),3,5);
         text(best_history_string, 0, 450);
     }
 
@@ -244,7 +252,7 @@ function draw()
         text("Best Current", 0,500);
         let best_current_string = getFunctionString(best_current);
         best_current_string[best_current_string.length-2]= " ";
-        best_current_string += " = " + calculateZ(best_current);
+        best_current_string += " = " + nf(calculateZ(best_current), 3,5);
         text(best_current_string, 0, 550);
     }
 }
